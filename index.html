@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jason Jung — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --ink: #1a1814;
+    --muted: #7a7670;
+    --accent: #2c5f8a;
+    --accent-light: #e8f0f7;
+    --rule: #d4cfc6;
+    --card: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(245, 243, 238, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-text {}
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-tagline {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+    font-weight: 300;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.85rem 1.8rem;
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero-cta:hover { background: var(--accent); transform: translateY(-2px); }
+  .hero-visual {
+    opacity: 0;
+    animation: fadeIn 1.2s 0.6s forwards;
+  }
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 2.5rem;
+    position: relative;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute; top: -8px; left: -8px; right: 8px; bottom: 8px;
+    border: 1px solid var(--accent);
+    z-index: -1;
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .stat { padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+  .stat:nth-child(odd) { border-right: 1px solid var(--rule); padding-right: 1.5rem; }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .interest-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; max-width: 1200px; margin: 0 auto; }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: start; }
+  .about-body { font-size: 1rem; color: var(--ink); line-height: 1.8; }
+  .about-body p { margin-bottom: 1.2rem; }
+  .about-body strong { color: var(--accent); font-weight: 500; }
+  .about-sidebar {}
+  .sidebar-block { margin-bottom: 2rem; }
+  .sidebar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .sidebar-value { font-size: 0.9rem; }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .exp-item.visible { opacity: 1; transform: translateY(0); }
+  .exp-meta {}
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .exp-company {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .exp-content {}
+  .exp-role {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+  }
+  .exp-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.8rem; }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s, box-shadow 0.2s;
+  }
+  .project-card.visible { opacity: 1; transform: translateY(0); }
+  .project-card:hover { box-shadow: 6px 6px 0 var(--accent-light); }
+  .project-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-index {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .project-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+  }
+  .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+
+  /* RESEARCH */
+  .research-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .research-card {
+    padding: 2rem;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .research-card.visible { opacity: 1; transform: translateY(0); }
+  .research-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .research-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .research-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* CONTACT */
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .contact-text {}
+  .contact-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .contact-sub { color: var(--muted); font-size: 0.95rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 0.85rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .contact-link:hover { background: var(--accent-light); border-color: var(--accent); }
+  .contact-link span { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 3rem; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .research-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">JJ / JASON</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Portfolio · Graduate School Applicant</p>
+    <h1 class="hero-name">Jason<br><em>(Hyeonsun)</em> Jung</h1>
+    <p class="hero-tagline">Full-Stack Security Engineer pursuing graduate research at the intersection of HCI and Usable Security.</p>
+    <a class="hero-cta" href="#contact">Get in Touch →</a>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3.84</div>
+          <div class="stat-label">GPA / 4.5</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">MS</div>
+          <div class="stat-label">Target Degree</div>
+        </div>
+      </div>
+      <div class="interest-tags">
+        <span class="tag">HCI</span>
+        <span class="tag">Usable Security</span>
+        <span class="tag">Authentication UX</span>
+        <span class="tag">FinTech</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-num">01 —</span>
+    <h2 class="section-title">About</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-body">
+      <p>I'm a software engineer with 6+ years of experience building <strong>large-scale financial security systems</strong> at MG Community Credit Cooperatives and Samsung SDS — specializing in biometric authentication, mobile OTP, and interbank network infrastructure.</p>
+      <p>Through hands-on work developing authentication systems, I've grown deeply curious about the human layer of security: <strong>why do technically sound systems so often fail in real-world use?</strong> This question drives my interest in Usable Security and Human-Computer Interaction.</p>
+      <p>I'm now pursuing graduate study in the U.S. to explore how we can design security systems that are both <strong>robust and genuinely usable</strong> — bridging the gap between engineering rigor and human-centered design.</p>
+      <p>Outside of engineering, I produce music and explore audio technology as a creative practice.</p>
+    </div>
+    <div class="about-sidebar">
+      <div class="sidebar-block">
+        <div class="sidebar-label">Education</div>
+        <div class="sidebar-value">B.E. Software Engineering<br>Gachon University<br><span style="color:var(--muted); font-size:0.85rem">GPA 3.84 / 4.5 (Major: 4.0 / 4.5)</span></div>
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-label">Languages</div>
+        <div class="sidebar-value">Korean (Native)<br>English (Professional)</div>
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-label">Certifications</div>
+        <div class="sidebar-value">
+          AWS Solutions Architect – Associate<br>
+          AWS Certified AI Practitioner<br>
+          AWS Certified Cloud Practitioner<br>
+          Samsung SW Certified (Type A: Advanced)<br>
+          Samsung SW Certified (Type B: Professional)<br>
+          Samsung Best Reviewer 2026
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-num">02 —</span>
+    <h2 class="section-title">Experience</h2>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Feb 2026 – Present</div>
+        <div class="exp-company">Samsung SDS</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Full-Stack Security Engineer</div>
+        <div class="exp-desc">Leading end-to-end development of a proprietary OTP authentication system for enterprise banking clients. Driving Authentication Modernization initiatives across the security team.</div>
+        <div class="skill-chips">
+          <span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">Authentication Systems</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Jan 2026 – May 2026</div>
+        <div class="exp-company">Samsung SDS</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Code Reviewer Training</div>
+        <div class="exp-desc">Spearheaded team-wide TDD adoption and Mockito-based testing practices, championing Engineering Excellence across the division.</div>
+        <div class="skill-chips">
+          <span class="chip">TDD</span><span class="chip">Mockito</span><span class="chip">Code Review</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">May 2024 – Dec 2025</div>
+        <div class="exp-company">Samsung SDS</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Full Stack Engineer — Monimo One-App</div>
+        <div class="exp-desc">Full-stack engineer on Samsung's integrated financial super-app (Monimo), developing features serving millions of users across Samsung Card, Samsung Securities, and Samsung Life.</div>
+        <div class="skill-chips">
+          <span class="chip">Spring Boot</span><span class="chip">Vue3</span><span class="chip">FinTech</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Mar 2020 – Mar 2024</div>
+        <div class="exp-company">MG Community Credit Cooperatives</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Core Banking Developer</div>
+        <div class="exp-desc">Maintained and enhanced critical financial infrastructure for one of Korea's largest cooperative banking networks. Led the first-ever palm vein biometric authentication system deployment — replacing ID cards and passbooks at teller windows, extended to airport integration for seamless cross-venue identity verification. Also operated interbank network systems including firm banking, interbank transfer networks, electronic finance networks, auto-payment systems (KFTC), affiliated card, and affiliated securities services.</div>
+        <div class="skill-chips">
+          <span class="chip">Oracle SQL</span><span class="chip">Proframe C</span><span class="chip">Biometric Auth</span><span class="chip">Interbank Networks</span><span class="chip">KFTC</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Jul 2019 – Aug 2019</div>
+        <div class="exp-company">S-1 Corporation</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Software Engineer Intern</div>
+        <div class="exp-desc">Developed control solutions including face detection features for Korea's leading security services company.</div>
+        <div class="skill-chips">
+          <span class="chip">Computer Vision</span><span class="chip">Face Detection</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <span class="section-num">03 —</span>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-index">P — 01</div>
+      <div class="project-name">Suhyup Internet Banking OTP System</div>
+      <div class="project-desc">Developing a proprietary Software OTP authentication module for Suhyup Bank's internet banking platform. Full-stack implementation from cryptographic backend to user-facing mobile interface.</div>
+      <div class="skill-chips">
+        <span class="chip">Java</span><span class="chip">Mobile OTP</span><span class="chip">Cryptography</span><span class="chip">Banking Security</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-index">P — 02</div>
+      <div class="project-name">Monimo Financial Super-App</div>
+      <div class="project-desc">Full-stack contributor to Samsung's integrated financial app consolidating Samsung Card, Securities, and Life Insurance. Delivered features to millions of users across a 1.5-year engagement.</div>
+      <div class="skill-chips">
+        <span class="chip">Spring Boot</span><span class="chip">Vue3</span><span class="chip">Microservices</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-index">P — 03</div>
+      <div class="project-name">Biometric Authentication Research (Personal)</div>
+      <div class="project-desc">Exploring the usability gap in biometric authentication systems — investigating why technically secure mechanisms fail at the human layer through literature review and prototype analysis.</div>
+      <div class="skill-chips">
+        <span class="chip">HCI</span><span class="chip">Usable Security</span><span class="chip">Biometrics</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-index">P — 04</div>
+      <div class="project-name">Palm Vein Biometric Authentication System</div>
+      <div class="project-desc">Led the first deployment of palm vein biometric authentication at MG Community Credit Cooperatives — replacing traditional ID cards and passbooks at teller windows. Extended the system to airport integration, enabling customers to use their registered palm vein across both banking and airport venues seamlessly.</div>
+      <div class="skill-chips">
+        <span class="chip">Biometric Auth</span><span class="chip">Identity Verification</span><span class="chip">System Integration</span><span class="chip">UX</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-index">P — 05</div>
+      <div class="project-name">Android Security Application</div>
+      <div class="project-desc">Designed and developed an Android security application leveraging native Android development practices and security engineering principles from enterprise experience.</div>
+      <div class="skill-chips">
+        <span class="chip">Android</span><span class="chip">Java</span><span class="chip">Security</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESEARCH INTERESTS -->
+<section id="research">
+  <div class="section-header">
+    <span class="section-num">04 —</span>
+    <h2 class="section-title">Research Interests</h2>
+  </div>
+  <div class="research-grid">
+    <div class="research-card">
+      <div class="research-icon">🔐</div>
+      <div class="research-name">Usable Security</div>
+      <div class="research-desc">Investigating how security system design shapes real-world user behavior, adoption, and compliance. Particularly interested in authentication UX and the human factors behind security failures.</div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">🖥️</div>
+      <div class="research-name">Human-Computer Interaction</div>
+      <div class="research-desc">Exploring user-centered design methodologies and how they can be applied to build systems that are both powerful and intuitive — especially in high-stakes financial and security contexts.</div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">🏦</div>
+      <div class="research-name">FinTech Security UX</div>
+      <div class="research-desc">Drawing from 6+ years in financial systems to research the intersection of financial technology, security architecture, and human-centered design in banking applications.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num">05 —</span>
+    <h2 class="section-title">Contact</h2>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-text">
+      <h3 class="contact-headline">Let's connect.</h3>
+      <p class="contact-sub">I'm actively seeking graduate programs in HCI and Usable Security. I'd love to connect with faculty, researchers, and fellow applicants.</p>
+    </div>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:hyeonsuns123@gmail.com">
+        hyeonsuns123@gmail.com
+        <span>Email →</span>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/hyeonsun-jung" target="_blank">
+        linkedin.com/in/hyeonsun-jung
+        <span>LinkedIn →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Jason (Hyeonsun) Jung</p>
+  <p>Full-Stack Security Engineer · HCI Researcher-in-Training</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.exp-item, .project-card, .research-card').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Stagger project cards
+  document.querySelectorAll('.project-card').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.1}s`;
+  });
+  document.querySelectorAll('.research-card').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+
+</body>
+</html>
